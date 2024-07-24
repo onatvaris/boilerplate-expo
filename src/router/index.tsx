@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { HomeScreen } from '../screens';
+import Screens from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -9,13 +9,14 @@ const Router = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name='Home'
-          component={HomeScreen}
-          options={{
-            headerShown: false
-          }}
-        />
+        {Screens.map(screen => (
+          <Stack.Screen
+            key={screen.name}
+            name={screen.name}
+            component={screen.component}
+            {...screen.props}
+          />
+        ))}
       </Stack.Navigator>
     </NavigationContainer>
   );
