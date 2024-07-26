@@ -1,8 +1,12 @@
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import type { DrawerNavigationOptions } from '@react-navigation/drawer';
+
+import { RootStackParamList } from './types';
 
 // screens
 import HomeScreen from './Home';
 import LoginScreen from './Login';
+import CustomPage from './CustomPage';
 
 type ScreenType = {
   name: string;
@@ -12,6 +16,27 @@ type ScreenType = {
     options?: NativeStackNavigationOptions;
   };
 };
+
+type DrawerScreenType = {
+  name: string;
+  component: React.ComponentType<any>;
+  props?: {
+    initialParams?: any;
+    options?: DrawerNavigationOptions;
+  };
+};
+
+const DrawerScreens: DrawerScreenType[] = [
+  {
+    name: 'CustomPage',
+    component: CustomPage,
+    props: {
+      options: {
+        title: 'Custom Page'
+      }
+    }
+  }
+];
 
 const Screens: ScreenType[] = [
   {
@@ -34,4 +59,4 @@ const Screens: ScreenType[] = [
   }
 ];
 
-export default Screens;
+export { Screens, DrawerScreens, RootStackParamList };

@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { RootStackScreenProps } from '../types';
 
-const LoginScreen = () => {
+const LoginScreen: React.FC<RootStackScreenProps<'Login'>> = ({
+  navigation
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
+    navigation.navigate('Home', {
+      screen: 'CustomPage'
+    });
     // Implement your login logic here
   };
 
