@@ -13,20 +13,11 @@ type ScreenType = {
   component: React.ComponentType<any>;
   props?: {
     initialParams?: any;
-    options?: NativeStackNavigationOptions;
+    options?: NativeStackNavigationOptions | DrawerNavigationOptions;
   };
 };
 
-type DrawerScreenType = {
-  name: string;
-  component: React.ComponentType<any>;
-  props?: {
-    initialParams?: any;
-    options?: DrawerNavigationOptions;
-  };
-};
-
-const DrawerScreens: DrawerScreenType[] = [
+const DrawerScreens: ScreenType[] = [
   {
     name: 'CustomPage',
     component: CustomPage,
