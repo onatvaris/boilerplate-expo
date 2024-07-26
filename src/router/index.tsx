@@ -9,41 +9,37 @@ import { HomeDrawerParamList } from '../screens/types';
 const Drawer = createDrawerNavigator<HomeDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const DrawerNavigator = () => {
-  return (
-    <Drawer.Navigator>
-      {DrawerScreens.map(screen => (
-        <Drawer.Screen
+const DrawerNavigator = () => (
+  <Drawer.Navigator>
+    {DrawerScreens.map(screen => (
+      <Drawer.Screen
+        key={screen.name}
+        name={screen.name as keyof HomeDrawerParamList}
+        component={screen.component}
+        {...screen.props}
+      />
+    ))}
+  </Drawer.Navigator>
+);
+
+const Router = () => (
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={'DrawerNavigator' as keyof RootStackParamList}
+        component={DrawerNavigator}
+        options={{ headerShown: false }}
+      />
+      {Screens.map(screen => (
+        <Stack.Screen
           key={screen.name}
-          name={screen.name as keyof HomeDrawerParamList}
+          name={screen.name as keyof RootStackParamList}
           component={screen.component}
           {...screen.props}
         />
       ))}
-    </Drawer.Navigator>
-  );
-};
-
-const Router = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name={'DrawerNavigator' as keyof RootStackParamList}
-          component={DrawerNavigator}
-          options={{ headerShown: false }}
-        />
-        {Screens.map(screen => (
-          <Stack.Screen
-            key={screen.name}
-            name={screen.name as keyof RootStackParamList}
-            component={screen.component}
-            {...screen.props}
-          />
-        ))}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 
 export default Router;
