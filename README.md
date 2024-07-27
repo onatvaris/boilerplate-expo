@@ -1,5 +1,3 @@
-Tabii ki, aşağıda commit mesajı kuralları ve örnekleri verilmiştir:
-
 ### Commit Mesajı Kuralları
 
 **commitlint** ile birlikte gelen `config-conventional` yapılandırması, Angular commit mesajı kurallarını kullanır. Örnek kurallar şunlardır:
