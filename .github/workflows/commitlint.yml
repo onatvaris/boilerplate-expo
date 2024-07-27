@@ -1,7 +1,13 @@
 name: CI
 
-on: [push, pull_request]
-  workflow_dispatch: # Manuel tetikleme
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
   commitlint:
