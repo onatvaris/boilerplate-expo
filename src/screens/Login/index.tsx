@@ -10,9 +10,6 @@ const LoginScreen: React.FC<RootStackScreenProps<'LoginPage'>> = ({
 
   const handleLogin = () => {
     // Implement your login logic here
-    navigation.navigate('Home', {
-      screen: 'HomePage'
-    });
   };
 
   return (
