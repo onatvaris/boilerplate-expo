@@ -3,22 +3,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { Screens, DrawerScreens, RootStackParamList } from '../screens';
-import { HomeDrawerParamList } from '../screens/types';
+import { Screens } from '../screens';
+import { HomeDrawerParamList, RootStackParamList } from '../screens/types';
+import LoginScreen from '../screens/Login';
 
 const Drawer = createDrawerNavigator<HomeDrawerParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const DrawerNavigator = () => (
   <Drawer.Navigator>
-    {DrawerScreens.map(screen => (
-      <Drawer.Screen
-        key={screen.name}
-        name={screen.name as keyof HomeDrawerParamList}
-        component={screen.component}
-        {...screen.props}
-      />
-    ))}
+    <Drawer.Screen name='HomePage' component={Screens.HomePage} />
+    <Drawer.Screen name='CustomPage' component={Screens.CustomPage} />
   </Drawer.Navigator>
 );
 
@@ -26,18 +21,11 @@ const Router = () => (
   <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen
-        name={'DrawerNavigator' as keyof RootStackParamList}
+        name='Home'
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
-      {Screens.map(screen => (
-        <Stack.Screen
-          key={screen.name}
-          name={screen.name as keyof RootStackParamList}
-          component={screen.component}
-          {...screen.props}
-        />
-      ))}
+      <Stack.Screen name='LoginPage' component={LoginScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );

@@ -1,17 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import {
-  HomeTabScreenProps,
-  RootStackParamList,
-  RootStackScreenProps
-} from '../types';
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
+import { HomeDrawerScreenProps } from '../types';
 
-const HomeScreen: React.FC<RootStackScreenProps<'Home'>> = ({ navigation }) => {
+const HomeScreen: React.FC<HomeDrawerScreenProps<'HomePage'>> = ({
+  navigation
+}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Login');
+          navigation.navigate('LoginPage');
         }}
       >
         <Text>Home Screen</Text>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { HomeTabScreenProps } from '../types';
+import { HomeDrawerScreenProps } from '../types';
 
-const CustomPage: React.FC<HomeTabScreenProps<'CustomPage'>> = ({
+const CustomPage: React.FC<HomeDrawerScreenProps<'CustomPage'>> = ({
   navigation
 }) => {
   return (

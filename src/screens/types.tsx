@@ -7,7 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Home: NavigatorScreenParams<HomeDrawerParamList>;
-  Login: undefined;
+  LoginPage: undefined;
 };
 
 export type RootStackScreenProps<
@@ -19,7 +19,7 @@ export type HomeDrawerParamList = {
   CustomPage: undefined;
 };
 
-export type HomeTabScreenProps<
+export type HomeDrawerScreenProps<
   T extends keyof HomeDrawerParamList
 > = CompositeScreenProps<
   DrawerScreenProps<HomeDrawerParamList, T>,
