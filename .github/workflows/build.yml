@@ -32,12 +32,16 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Decode Keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/your-keystore-file.keystore
+      - name: Use Android Keystore from Secrets
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+        run: |
+          echo "$ANDROID_KEYSTORE" | base64 --decode > android/app/keystore.jks
+          chmod 600 android/app/keystore.jks
 
       - name: Set up Signing Configs
         run: |
-          echo "RELEASE_STORE_FILE=$(pwd)/android/app/your-keystore-file.keystore" >> $GITHUB_ENV
+          echo "RELEASE_STORE_FILE=$(pwd)/android/app/keystore.jks" >> $GITHUB_ENV
           echo "RELEASE_STORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
           echo "RELEASE_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> $GITHUB_ENV
           echo "RELEASE_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $GITHUB_ENV
