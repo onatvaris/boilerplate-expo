@@ -1,25 +1,25 @@
-Bu depo, bir Android uygulaması için otomatik olarak imzalanmış APK ve AAB dosyaları oluşturmak amacıyla yapılandırılmış bir GitHub Actions iş akışı (`build.yml`) içerir. Bu iş akışının sorunsuz bir şekilde çalışabilmesi için aşağıdaki gereksinimlerin karşılanması gerekir:
+This repository contains a GitHub Actions workflow (`build.yml`) configured to automatically generate signed APK and AAB files for an Android application. To ensure the smooth operation of this workflow, the following requirements must be met:
 
-### Gereksinimler
+## Requirements
 
-#### 1. Keystore Dosyasının Oluşturulması ve GitHub Secrets'a Eklenmesi
+### 1. Creating a Keystore File and Adding it to GitHub Secrets
 
-**Keystore Dosyasını Oluşturma:**
+#### Creating the Keystore File:
 
-Android uygulamanızın imzalanması için bir keystore dosyası oluşturmanız gerekir. Bunu yapmak için aşağıdaki komutu kullanabilirsiniz:
+To sign your Android application, you need to create a keystore file. You can do this using the following command:
 
 ```bash
 keytool -genkey -v -keystore your-keystore-file.jks -keyalg RSA -keysize 2048 -validity 10000 -alias your-key-alias
 ```
 
-Bu komutu çalıştırdığınızda, aşağıdaki bilgileri girmeniz istenecektir:
+When you run this command, you will be prompted to enter the following information:
 
-- **Keystore Şifresi**: Keystore dosyasını korumak için bir şifre belirlemeniz gerekecek. Bu şifre hem keystore dosyası hem de anahtar (key alias) için kullanılacaktır.
-- **Kişisel Bilgiler**: İsteğe bağlı olarak adınız, organizasyonunuz, şehir vb. bilgileri girebilirsiniz. Bu bilgiler, anahtar sertifikasında yer alır.
+- **Keystore Password:** You will need to set a password to protect the keystore file. This password will be used for both the keystore file and the key alias.
+- **Personal Information:** Optionally, you can enter your name, organization, city, etc. This information will be included in the key certificate.
 
-Örnek bir girdi:
+Example input:
 
-```bash
+```
 Enter keystore password:
 Re-enter new password:
 What is your first and last name?
@@ -38,61 +38,63 @@ Is CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown correct?
   [no]:  yes
 ```
 
-Bu işlemin sonunda, `your-keystore-file.jks` adlı bir keystore dosyası oluşturulmuş olacaktır.
+At the end of this process, a keystore file named `your-keystore-file.jks` will be created.
 
-**Keystore Dosyasını Base64 Formatına Dönüştürme:**
+#### Converting the Keystore File to Base64:
 
-GitHub Secrets'a ekleyebilmek için keystore dosyanızı base64 formatına dönüştürmeniz gerekmektedir. Bunu yapmak için aşağıdaki komutu kullanabilirsiniz:
+To add the keystore file to GitHub Secrets, you need to convert it to Base64 format. You can do this using the following command:
 
 ```bash
 base64 -i your-keystore-file.jks -o your-keystore-file.jks.base64
 ```
 
-Bu komut, keystore dosyanızı base64 formatına dönüştürerek `your-keystore-file.jks.base64` adlı bir dosyaya kaydedecektir.
+This command will convert the keystore file to Base64 format and save it as `your-keystore-file.jks.base64`.
 
-**Base64 Keystore Dosyasını GitHub Secrets'a Ekleme:**
+#### Adding the Base64 Keystore File to GitHub Secrets:
 
-GitHub deposu için oluşturduğunuz `your-keystore-file.jks.base64` dosyasının içeriğini kopyalayın ve GitHub Secrets'a aşağıdaki şekilde ekleyin:
+Copy the contents of the `your-keystore-file.jks.base64` file and add it to GitHub Secrets as follows:
 
-- **ANDROID_KEYSTORE**: `your-keystore-file.jks.base64` dosyasının içeriği.
-- **ANDROID_KEYSTORE_PASSWORD**: Keystore dosyası oluştururken belirlediğiniz şifre.
-- **ANDROID_KEY_ALIAS**: Keystore dosyası oluştururken kullandığınız alias (anahtar adı).
-- **ANDROID_KEY_PASSWORD**: Eğer ayrı bir key password belirlemediyseniz, `ANDROID_KEYSTORE_PASSWORD` ile aynı şifreyi kullanabilirsiniz.
+- **ANDROID_KEYSTORE:** The contents of the `your-keystore-file.jks.base64` file.
+- **ANDROID_KEYSTORE_PASSWORD:** The password you set when creating the keystore file.
+- **ANDROID_KEY_ALIAS:** The alias (key name) you used when creating the keystore file.
+- **ANDROID_KEY_PASSWORD:** If you did not set a separate key password, use the same password as `ANDROID_KEYSTORE_PASSWORD`.
 
-**Güvenlik Notu**: Bu bilgiler oldukça hassastır. GitHub Secrets'ı kullanmak güvenlidir, ancak bu bilgileri asla açık bir şekilde paylaşmayın veya kaynak kodunuza eklemeyin. Düzenli olarak şifreleri değiştirmeyi ve erişimi sınırlamayı unutmayın..
+**Security Note:** This information is highly sensitive. While using GitHub Secrets is secure, never share this information openly or include it in your source code. Remember to regularly change your passwords and limit access.
 
-### `build.yml` Dosyasının Çalıştırılması
+## Running the `build.yml` File
 
-Bu `build.yml` dosyası, yukarıdaki gereksinimlerin karşılanmasının ardından GitHub Actions iş akışı olarak çalıştırılabilir. Bu iş akışı, her `push` veya manuel tetikleme sonrası Android uygulamanız için imzalanmış APK ve AAB dosyalarını otomatik olarak oluşturur ve bunları depoya yükler. Bu işlem, Android uygulamanızın her sürümünün güvenli ve tutarlı bir şekilde imzalanmasını sağlar, böylece kullanıcılarınıza güvenle sunabilirsiniz.
+Once the above requirements are met, the `build.yml` file can be run as a GitHub Actions workflow. This workflow will automatically generate signed APK and AAB files for your Android application after each push or manual trigger and upload them to the repository. This process ensures that each version of your Android application is signed securely and consistently, allowing you to distribute it to your users with confidence.
 
 ---
 
-### Commit Mesajı Kuralları
+## Commit Message Guidelines
 
-**commitlint** ile birlikte gelen `config-conventional` yapılandırması, Angular commit mesajı kurallarını kullanır. Örnek kurallar şunlardır:
+The `commitlint` configuration uses the `config-conventional` setup, which follows Angular commit message guidelines. Example rules include:
 
-- **build**: Derleme sisteminde yapılan değişiklikler veya dış bağımlılıkların eklenmesi ya da kaldırılması
-- **chore**: Build süreci veya yardımcı araçların değişiklikleri ve dökümantasyon oluşturma
-- **ci**: Sürekli entegrasyon dosyalarında veya komutlarında yapılan değişiklikler
-- **docs**: Sadece dökümantasyon değişiklikleri
-- **feat**: Yeni bir özellik eklenmesi
-- **fix**: Bir hatanın düzeltilmesi
-- **perf**: Performans iyileştirmeleri için yapılan değişiklikler
-- **refactor**: Ne bir hata düzeltmesi ne de yeni bir özellik olan kod değişiklikleri
-- **revert**: Daha önceki bir commit'in geri alınması
-- **style**: Kodun anlamını etkilemeyen değişiklikler (boşluk, formatlama, noktalama işaretleri vb.)
-- **test**: Test eklenmesi veya mevcut testlerin değiştirilmesi
+- **build:** Changes related to the build system or external dependencies (addition/removal)
+- **chore:** Changes to the build process or auxiliary tools and libraries such as documentation generation
+- **ci:** Changes to CI configuration files and scripts
+- **docs:** Documentation-only changes
+- **feat:** A new feature
+- **fix:** A bug fix
+- **perf:** A code change that improves performance
+- **refactor:** A code change that neither fixes a bug nor adds a feature
+- **revert:** Reverts a previous commit
+- **style:** Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc.)
+- **test:** Adding missing tests or correcting existing tests
 
-### Örnek Commit Mesajları
+### Example Commit Messages
 
-- `build: yeni bir bağımlılık eklendi`
-- `chore: package.json dosyası güncellendi`
-- `ci: GitHub Actions yapılandırması güncellendi`
-- `docs: readme dosyası güncellendi`
-- `feat: kullanıcı profil sayfası eklendi`
-- `fix: giriş formundaki hata giderildi`
-- `perf: veritabanı sorgusu optimize edildi`
-- `refactor: kullanıcı doğrulama işlevi yeniden düzenlendi`
-- `revert: önceki commit geri alındı`
-- `style: kod formatı düzenlendi`
-- `test: yeni test senaryoları eklendi`
+- `build: added a new dependency`
+- `chore: updated package.json`
+- `ci: updated GitHub Actions configuration`
+- `docs: updated README file`
+- `feat: added user profile page`
+- `fix: resolved error in login form`
+- `perf: optimized database query`
+- `refactor: reorganized user validation function`
+- `revert: reverted previous commit`
+- `style: formatted code`
+- `test: added new test scenarios`
+
+---
