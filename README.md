@@ -45,7 +45,7 @@ Bu işlemin sonunda, `your-keystore-file.jks` adlı bir keystore dosyası oluşt
 GitHub Secrets'a ekleyebilmek için keystore dosyanızı base64 formatına dönüştürmeniz gerekmektedir. Bunu yapmak için aşağıdaki komutu kullanabilirsiniz:
 
 ```bash
-base64 -i your-keystore-file.jks -o keystore.jks.base64
+base64 -i your-keystore-file.jks -o your-keystore-file.jks.base64
 ```
 
 Bu komut, keystore dosyanızı base64 formatına dönüştürerek `your-keystore-file.jks.base64` adlı bir dosyaya kaydedecektir.
@@ -58,6 +58,8 @@ GitHub deposu için oluşturduğunuz `your-keystore-file.jks.base64` dosyasını
 - **ANDROID_KEYSTORE_PASSWORD**: Keystore dosyası oluştururken belirlediğiniz şifre.
 - **ANDROID_KEY_ALIAS**: Keystore dosyası oluştururken kullandığınız alias (anahtar adı).
 - **ANDROID_KEY_PASSWORD**: Eğer ayrı bir key password belirlemediyseniz, `ANDROID_KEYSTORE_PASSWORD` ile aynı şifreyi kullanabilirsiniz.
+
+**Güvenlik Notu**: Bu bilgiler oldukça hassastır. GitHub Secrets'ı kullanmak güvenlidir, ancak bu bilgileri asla açık bir şekilde paylaşmayın veya kaynak kodunuza eklemeyin. Düzenli olarak şifreleri değiştirmeyi ve erişimi sınırlamayı unutmayın..
 
 ### `build.yml` Dosyasının Çalıştırılması
 
