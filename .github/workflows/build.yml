@@ -35,7 +35,7 @@ jobs:
           PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           CURRENT_KEY: ${{ secrets.CURRENT_KEY }}
-        run: npm run andorid:google-services
+        run: npm run android:google-services
 
       - name: Run prebuild to generate Android and iOS folders
         run: npx expo prebuild
