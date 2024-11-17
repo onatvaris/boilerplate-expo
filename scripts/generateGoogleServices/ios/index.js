@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const appConfig = require('../../../app.json');
 
-const plistPath = require.resolve('./template.plist'); /
+const plistPath = require.resolve('./template.plist');
 const plistContent = fs.readFileSync(plistPath, 'utf8');
 
 const parsedPlist = plist.parse(plistContent);
