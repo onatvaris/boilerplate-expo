@@ -1,10 +1,15 @@
 const fs = require('fs');
-const dotenv = require('dotenv');
-
 const appConfig = require('../../../app.json');
-const templateFilePath = require.resolve('./template.json');
+const path = require('path');
 
-dotenv.config();
+const rootPath = path.resolve(__dirname, '../../../');
+
+require('dotenv').config();
+
+const templateFilePath = path.join(
+  rootPath,
+  'scripts/generateGoogleServices/android/template.json'
+);
 
 const androidGoogleService = fs.readFileSync(templateFilePath, 'utf8');
 
@@ -14,4 +19,7 @@ const filledTemplate = androidGoogleService
   .replaceAll('${CURRENT_KEY}', process.env.CURRENT_KEY)
   .replaceAll('${PACKAGE_NAME}', appConfig.expo.android.package);
 
-fs.writeFileSync('src/assets/google-services.json', filledTemplate);
+fs.writeFileSync(
+  path.join(rootPath, 'src/assets/google-services.json'),
+  filledTemplate
+);
