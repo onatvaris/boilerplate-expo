@@ -8,7 +8,9 @@
     "ios": "expo run:ios",
     "prepare": "husky",
     "commit": "git-cz",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android:google-services": "node scripts/generateGoogleServices/android",
+    "ios:google-services": "node scripts/generateGoogleServices/ios"
   },
   "dependencies": {
     "@react-native-firebase/app": "^21.4.0",
