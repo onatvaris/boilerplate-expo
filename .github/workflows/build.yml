@@ -26,6 +26,20 @@ jobs:
       - name: Run prebuild to generate Android and iOS folders
         run: npx expo prebuild
 
+      - name: Generate iOS GoogleService-Info.plist
+        env:
+          IOS_API_KEY: ${{ secrets.IOS_API_KEY }}
+          IOS_GCM_SENDER_ID: ${{ secrets.IOS_GCM_SENDER_ID }}
+          GOOGLE_APP_ID: ${{ secrets.GOOGLE_APP_ID }}
+        run: npm run ios:google-services
+
+      - name: Generate Android google-services.json
+        env:
+          PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          CURRENT_KEY: ${{ secrets.CURRENT_KEY }}
+        run: npm run andorid:google-services
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
