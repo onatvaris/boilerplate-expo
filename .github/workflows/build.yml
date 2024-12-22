@@ -65,7 +65,7 @@ jobs:
           cd android
           ./gradlew bundleRelease assembleRelease -Pandroid.injected.signing.store.file=$RELEASE_STORE_FILE -Pandroid.injected.signing.store.password=$RELEASE_STORE_PASSWORD -Pandroid.injected.signing.key.alias=$RELEASE_KEY_ALIAS -Pandroid.injected.signing.key.password=$RELEASE_KEY_PASSWORD
         env:
-          JAVA_HOME: /opt/hostedtoolcache/Java_Adopt_jdk/17.0.13-11/x64
+          JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64
           RELEASE_STORE_FILE: ${{ env.RELEASE_STORE_FILE }}
           RELEASE_STORE_PASSWORD: ${{ env.RELEASE_STORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ env.RELEASE_KEY_ALIAS }}
