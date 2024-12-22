@@ -13,17 +13,29 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.onatvaris.boilerplatemyapp"
+      "bundleIdentifier": "com.onatvaris.boilerplatemyapp",
+      "googleServicesFile": "./src/assets/GoogleService-Info.plist"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./src/assets/google-services.json",
       "package": "com.onatvaris.boilerplatemyapp"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ]
   }
 }
