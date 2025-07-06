@@ -98,3 +98,149 @@ The `commitlint` configuration uses the `config-conventional` setup, which follo
 - `test: added new test scenarios`
 
 ---
+
+## Firebase Integration
+
+This project is integrated with Firebase services. To use Firebase features, you need to follow the steps below:
+
+### Firebase Project Setup
+
+#### 1. Creating a Project in Firebase Console
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click **"Add project"** button
+3. Enter project name (e.g., `boilerplate-app-expo`)
+4. Enable Google Analytics (optional)
+5. Create the project
+
+#### 2. Adding Android Application
+
+1. Select your project in Firebase Console
+2. Select **"Add app"** → **Android** icon
+3. **Android package name**: `com.onatvaris.boilerplatemyapp`
+4. **App nickname**: Optional
+5. **SHA-1 certificate fingerprint**: Get from your keystore file
+6. Click **"Register app"** button
+7. Download `google-services.json` file (save it for now)
+
+#### 3. Adding iOS Application
+
+1. In Firebase Console, select **"Add app"** → **iOS** icon
+2. **iOS bundle ID**: `com.onatvaris.boilerplatemyapp`
+3. **App nickname**: Optional
+4. Click **"Register app"** button
+5. Download `GoogleService-Info.plist` file (save it for now)
+
+### Firebase Services Activation
+
+#### 1. Crashlytics Activation
+
+1. Go to **"Crashlytics"** tab in Firebase Console
+2. Click **"Enable Crashlytics"** button
+3. Select platform (Android/iOS)
+4. Follow the setup instructions
+
+#### 2. Other Services (Optional)
+
+You can also enable the following services according to your project needs:
+- **Authentication**: User authentication
+- **Firestore**: NoSQL database
+- **Cloud Storage**: File storage
+- **Cloud Functions**: Server-side functions
+- **Analytics**: Application analytics
+
+### GitHub Secrets Configuration
+
+For Firebase integration to work in GitHub Actions, you need to add the following secrets to your repository:
+
+#### Firebase Secrets
+
+**For iOS:**
+- **`IOS_API_KEY`**: Firebase Console → Project Settings → iOS App → Web API Key
+- **`IOS_GCM_SENDER_ID`**: Firebase Console → Project Settings → Cloud Messaging → Sender ID
+- **`GOOGLE_APP_ID`**: Firebase Console → Project Settings → iOS App → App ID
+
+**For Android:**
+- **`PROJECT_NUMBER`**: Firebase Console → Project Settings → General → Project number
+- **`PROJECT_ID`**: Firebase Console → Project Settings → General → Project ID
+- **`CURRENT_KEY`**: Firebase Console → Project Settings → Android App → Web API Key
+
+#### Adding GitHub Secrets
+
+1. GitHub Repository → **Settings** → **Secrets and variables** → **Actions**
+2. Click **"New repository secret"** button
+3. Fill in **Name** and **Value** fields for each secret
+
+### Local Development Setup
+
+#### 1. Generating Firebase Configuration Files
+
+The project can automatically generate Firebase configuration files:
+
+```bash
+# Generate Android google-services.json file
+npm run android:google-services
+
+# Generate iOS GoogleService-Info.plist file
+npm run ios:google-services
+```
+
+#### 2. Custom Configuration with Environment Variables
+
+If you want to use real Firebase values for production environment:
+
+```bash
+# Create .env file (add this file to .gitignore)
+FIREBASE_PROJECT_ID=your-real-project-id
+FIREBASE_API_KEY=your-real-api-key
+FIREBASE_APP_ID=your-real-app-id
+
+# Generate configuration files
+npm run android:google-services
+npm run ios:google-services
+```
+
+### CI/CD Processes
+
+GitHub Actions workflow (`build.yml`) automatically performs the following Firebase operations:
+
+1. **Firebase Configuration Files Generation**: `google-services.json` and `GoogleService-Info.plist` files are automatically created using defined secrets
+2. **Expo Prebuild**: Android and iOS folders are generated after Firebase files are placed
+3. **Signed APK/AAB Generation**: Signed build files are created with Firebase integration
+
+This process is completely automatic and requires no manual intervention. Only the correct definition of GitHub Secrets is sufficient.
+
+### Troubleshooting
+
+#### 1. Build Errors
+
+- **Android**: Make sure `google-services.json` file is in the `android/app/` folder
+- **iOS**: Make sure `GoogleService-Info.plist` file is added to the Xcode project
+
+#### 2. Firebase Connection Issues
+
+- Make sure package name/Bundle IDs match those in Firebase Console
+- Check that API keys are correct
+- Check network connection
+
+#### 3. GitHub Actions Errors
+
+- Make sure all secrets are defined
+- Check that secret values are correct
+- Examine workflow logs in detail
+
+### Security Notes
+
+1. **Keep API Keys Secret**: Never share Firebase API keys in public repositories
+2. **Firebase Rules**: Configure security rules for Firestore and Storage
+3. **App Check**: Enable App Check in production environment
+4. **Regular Updates**: Update Firebase SDKs regularly
+
+### Useful Resources
+
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [React Native Firebase](https://rnfirebase.io/)
+- [Firebase Console](https://console.firebase.google.com/)
+- [Firebase Status](https://status.firebase.google.com/)
+
+---

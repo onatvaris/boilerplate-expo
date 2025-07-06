@@ -96,3 +96,149 @@ Bu `build.yml` dosyası, yukarıdaki gereksinimlerin karşılanmasının ardınd
 - `revert: önceki commit geri alındı`
 - `style: kod formatı düzenlendi`
 - `test: yeni test senaryoları eklendi`
+
+---
+
+## Firebase Entegrasyonu
+
+Bu proje Firebase servisleri ile entegre edilmiştir. Firebase özelliklerini kullanabilmek için aşağıdaki adımları takip etmeniz gerekir:
+
+### Firebase Proje Kurulumu
+
+#### 1. Firebase Konsolu'nda Proje Oluşturma
+
+1. [Firebase Console](https://console.firebase.google.com/) adresine gidin
+2. **"Add project"** butonuna tıklayın
+3. Proje adını girin (örn: `boilerplate-app-expo`)
+4. Google Analytics'i etkinleştirin (isteğe bağlı)
+5. Projeyi oluşturun
+
+#### 2. Android Uygulaması Ekleme
+
+1. Firebase Console'da projenizi seçin
+2. **"Add app"** → **Android** simgesini seçin
+3. **Android package name**: `com.onatvaris.boilerplatemyapp`
+4. **App nickname**: İsteğe bağlı
+5. **SHA-1 certificate fingerprint**: Keystore dosyanızdan alın
+6. **"Register app"** butonuna tıklayın
+7. `google-services.json` dosyasını indirin (şimdilik saklayın)
+
+#### 3. iOS Uygulaması Ekleme
+
+1. Firebase Console'da **"Add app"** → **iOS** simgesini seçin
+2. **iOS bundle ID**: `com.onatvaris.boilerplatemyapp`
+3. **App nickname**: İsteğe bağlı
+4. **"Register app"** butonuna tıklayın
+5. `GoogleService-Info.plist` dosyasını indirin (şimdilik saklayın)
+
+### Firebase Servisleri Aktivasyonu
+
+#### 1. Crashlytics Aktivasyonu
+
+1. Firebase Console'da **"Crashlytics"** sekmesine gidin
+2. **"Enable Crashlytics"** butonuna tıklayın
+3. Platform seçimini yapın (Android/iOS)
+4. Kurulum talimatlarını takip edin
+
+#### 2. Diğer Servisler (İsteğe Bağlı)
+
+Proje ihtiyaçlarınıza göre aşağıdaki servisleri de etkinleştirebilirsiniz:
+- **Authentication**: Kullanıcı doğrulama
+- **Firestore**: NoSQL veritabanı
+- **Cloud Storage**: Dosya depolama
+- **Cloud Functions**: Sunucu tarafı fonksiyonlar
+- **Analytics**: Uygulama analitikleri
+
+### GitHub Secrets Yapılandırması
+
+Firebase entegrasyonunun GitHub Actions'ta çalışması için aşağıdaki secrets'ları repository'nize eklemeniz gerekir:
+
+#### Firebase Secrets
+
+**iOS için:**
+- **`IOS_API_KEY`**: Firebase Console → Project Settings → iOS App → Web API Key
+- **`IOS_GCM_SENDER_ID`**: Firebase Console → Project Settings → Cloud Messaging → Sender ID
+- **`GOOGLE_APP_ID`**: Firebase Console → Project Settings → iOS App → App ID
+
+**Android için:**
+- **`PROJECT_NUMBER`**: Firebase Console → Project Settings → General → Project number
+- **`PROJECT_ID`**: Firebase Console → Project Settings → General → Project ID
+- **`CURRENT_KEY`**: Firebase Console → Project Settings → Android App → Web API Key
+
+#### GitHub Secrets Ekleme
+
+1. GitHub Repository → **Settings** → **Secrets and variables** → **Actions**
+2. **"New repository secret"** butonuna tıklayın
+3. Her secret için **Name** ve **Value** alanlarını doldurun
+
+### Yerel Geliştirme Kurulumu
+
+#### 1. Firebase Konfigürasyon Dosyalarını Üretme
+
+Proje, Firebase konfigürasyon dosyalarını otomatik olarak üretebilir:
+
+```bash
+# Android google-services.json dosyasını üret
+npm run android:google-services
+
+# iOS GoogleService-Info.plist dosyasını üret
+npm run ios:google-services
+```
+
+#### 2. Environment Variables ile Özelleştirilmiş Konfigürasyon
+
+Üretim ortamı için gerçek Firebase değerlerini kullanmak istiyorsanız:
+
+```bash
+# .env dosyası oluşturun (bu dosyayı .gitignore'a ekleyin)
+FIREBASE_PROJECT_ID=your-real-project-id
+FIREBASE_API_KEY=your-real-api-key
+FIREBASE_APP_ID=your-real-app-id
+
+# Konfigürasyon dosyalarını üretin
+npm run android:google-services
+npm run ios:google-services
+```
+
+### CI/CD Süreçleri
+
+GitHub Actions workflow'u (`build.yml`) otomatik olarak aşağıdaki Firebase işlemlerini gerçekleştirir:
+
+1. **Firebase Konfigürasyon Dosyaları Üretimi**: Tanımlanan secrets'lar kullanılarak `google-services.json` ve `GoogleService-Info.plist` dosyaları otomatik oluşturulur
+2. **Expo Prebuild**: Firebase dosyaları yerleştirildikten sonra Android ve iOS klasörleri generate edilir
+3. **Imzalı APK/AAB Üretimi**: Firebase entegrasyonu ile birlikte imzalı build dosyaları oluşturulur
+
+Bu süreç tamamen otomatiktir ve manuel müdahale gerektirmez. Yalnızca GitHub Secrets'ların doğru tanımlanmış olması yeterlidir.
+
+### Sorun Giderme
+
+#### 1. Build Hataları
+
+- **Android**: `google-services.json` dosyasının `android/app/` klasöründe olduğundan emin olun
+- **iOS**: `GoogleService-Info.plist` dosyasının Xcode projesine eklendiğinden emin olun
+
+#### 2. Firebase Bağlantı Sorunları
+
+- Package name/Bundle ID'lerin Firebase Console'daki ile eşleştiğinden emin olun
+- API key'lerin doğru olduğunu kontrol edin
+- Network bağlantısını kontrol edin
+
+#### 3. GitHub Actions Hataları
+
+- Tüm secrets'ların tanımlandığından emin olun
+- Secret değerlerinin doğru olduğunu kontrol edin
+- Workflow loglarını detaylı inceleyin
+
+### Güvenlik Notları
+
+1. **API Key'leri Gizli Tutun**: Firebase API key'lerini asla public repository'lerde paylaşmayın
+2. **Firebase Rules**: Firestore ve Storage için güvenlik kurallarını yapılandırın
+3. **App Check**: Üretim ortamında App Check'i etkinleştirin
+4. **Regular Updates**: Firebase SDK'larını düzenli olarak güncelleyin
+
+### Faydalı Kaynaklar
+
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [React Native Firebase](https://rnfirebase.io/)
+- [Firebase Console](https://console.firebase.google.com/)
+- [Firebase Status](https://status.firebase.google.com/)
